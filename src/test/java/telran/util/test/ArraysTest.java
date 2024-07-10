@@ -15,10 +15,23 @@ public class ArraysTest {
             assertEquals(3,search(numbers, -4));
             assertEquals(-1, search(numbers, 100));
         }
-        
+    @Test   
         void addTest() {
             int newNumber = 100;
             int[] expected = {10, 7, 12, -4, 13, 3, 14, 100};
             assertArrayEquals(expected, add(numbers, newNumber));
+        }
+    @Test
+        void insertTest() {
+            int index = 3;
+            int number = 5;
+            int[] expected = {10, 7, 12, 5, -4, 13, 3, 14};
+            assertArrayEquals(expected, insert(numbers, index, number));
+        }
+    @Test
+        void removeTest() {
+            int index = 3;
+            int [] expected = {10, 7, 12, 13, 3, 14};
+            assertArrayEquals(expected, remove(numbers, index));
         }
 }

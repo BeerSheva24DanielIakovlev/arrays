@@ -14,4 +14,17 @@ public class Arrays {
         res[ar.length] = number;
         return res;
     }
+
+    public static int[] insert(int[] ar, int index, int number) {
+        int [] res = java.util.Arrays.copyOf(ar, ar.length + 1);
+        res[index] = number;
+        System.arraycopy (ar, index, res, index + 1, ar.length - index);
+        return res; 
+    }
+
+    public static int[] remove(int[] numbers, int index) {
+        int [] res = java.util.Arrays.copyOf(numbers, numbers.length - 1);
+        System.arraycopy(numbers, index + 1, res, index, numbers.length - index - 1);
+        return res;
+    }
 }
