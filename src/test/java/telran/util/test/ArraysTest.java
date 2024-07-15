@@ -74,4 +74,24 @@ public class ArraysTest {
                 }
                 return res;
             }
+    @Test
+        void binarySearchTest() {
+            int[] ar = {-4, 3, 7, 10, 12, 13, 14};
+            assertEquals(1, binarySearch(ar, 3));
+            assertEquals(-1,binarySearch(ar, 9));
+        }
+    @Test
+        void insertSortedTest() {
+            int[] arSorted = {-4, 3, 7, 10, 12, 13, 14};
+            int[] expected = {-4, 3, 7, 9, 10, 12, 13, 14};
+            assertArrayEquals(expected, insertSorted(arSorted, 9) );
+            assertArrayEquals(arSorted, insertSorted(arSorted, 10) );
+        }
+    @Test
+        void isOneSwapTest() {
+            int[] array = {-4, 12, 3, 7, 13, 14};
+            int[] arrayTwo = {-4, 3, 12, 7, 13, 14};
+            assertEquals(false, isOneSwap(array));
+            assertEquals(true, isOneSwap(arrayTwo));
+        }
 }

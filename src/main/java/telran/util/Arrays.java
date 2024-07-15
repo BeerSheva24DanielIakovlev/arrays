@@ -53,22 +53,78 @@ public class Arrays {
             flSorted = pushMaxAtEnd(ar, length);
         } 
     }
-    /*public static int binarySearch(int [] ar, int key) {
-        TODO
-    
+
+    public static int binarySearch(int [] ar, int key) {
+        int start = 0;
+        int finish = ar.length - 1;
+        
+        while (start <= finish) {
+            int mid = start + (finish - start) / 2;
+            
+            if (ar[mid] == key) {
+                return mid;
+            }
+            
+            else if (ar[mid] > key) {
+                finish = mid - 1;
+            }
+
+            else {
+                start = mid + 1;
+            }
+        }
+        
+        return -1;
     }
-    return -1;*/
+    
 
-    /*public static int[] insertSorted(int[] arSorted, int number) {
-        TODO
-    } 
-    return null;*/
+    public static int[] insertSorted(int[] arSorted, int number) {
+        int start = 0;
+        int finish = arSorted.length - 1;
+        
+        while (start <= finish) {
+            int mid = start + (finish - start) / 2;
+            
+            if (arSorted[mid] == number) {
+                return arSorted;
+            }
+            
+            else if (arSorted[mid] > number) {
+                finish = mid - 1;
+            }
+            
+            else {
+                start = mid + 1;
+            }
+        }
+        int index = start;
+        
+        int [] res = java.util.Arrays.copyOf(arSorted, arSorted.length + 1);
+        res[index] = number;
+        System.arraycopy (arSorted, index, res, index + 1, arSorted.length - index);
+        return res;
+    }
 
-    /*public static boolean isOneSwap(int [] array) {
-        TODO
-        return false;
-    } */
-
-
+    public static boolean isOneSwap(int [] array) {
+        int length = array.length;
+        int counter = 0;
+        boolean res = true;
+        
+        while (res) {
+            res = false;
+        
+            for(int i = 1; i < length; i++) {
+                if(array[i - 1] > array[i]) {
+                    swap(array, i - 1, i);
+                    counter++;
+                }
+                
+                res = true;
+                
+            }
+            length--;
+        }
+        return counter == 1;
+    }
 }
 
