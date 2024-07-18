@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import static telran.util.Arrays.*;
 
-import java.util.Comparator;
+//import java.util.Comparator;
+
 import java.util.Random;
 
 public class ArraysTest {
@@ -121,5 +122,31 @@ public class ArraysTest {
             assertEquals(0, binarySearch(numbers, 1000, new ComparatorNumbers()));
             assertEquals(-3, binarySearch(numbers, 3000, new ComparatorNumbers()));
         }
-}
+    @Test
+        void binarySearchNoComparatorTest() {
+            String [] strings = {"aa", "cfta", "lmn", "w"};
+            Person prs1 = new Person(10, "Vasya");
+            Person prs2 = new Person(20, "Itay");
+            Person prs3 = new Person(30, "Sara");
+            Person [] persons = {
+                prs1, prs2, prs3
+            };
+            assertEquals(1, /*java.util.Arrays.*/binarySearch(strings, "cfta"));
+            assertEquals(0, /*java.util.Arrays.*/binarySearch(persons, prs1));
+            assertEquals(-1, /*java.util.Arrays.*/binarySearch(persons, new Person(5, "Serg")));
 
+        }
+    @Test
+        void evenOddSorting() {
+            Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+            Integer[] expected = {-100, -10, -8, 10,  99, 13, 7}; // even numbers in ascending order first, odd numbers in
+            sort(array, new EvenOddComparator());
+            assertArrayEquals(expected, array);
+        }
+    @Test
+        void findTest() {
+            Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+            Integer[] expected = {7, 13, 99};
+            assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
+        }
+}
