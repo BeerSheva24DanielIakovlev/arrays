@@ -128,9 +128,7 @@ public class ArraysTest {
             Person prs1 = new Person(10, "Vasya");
             Person prs2 = new Person(20, "Itay");
             Person prs3 = new Person(30, "Sara");
-            Person [] persons = {
-                prs1, prs2, prs3
-            };
+            Person [] persons = {prs1, prs2, prs3};
             assertEquals(1, /*java.util.Arrays.*/binarySearch(strings, "cfta"));
             assertEquals(0, /*java.util.Arrays.*/binarySearch(persons, prs1));
             assertEquals(-1, /*java.util.Arrays.*/binarySearch(persons, new Person(5, "Serg")));
@@ -139,7 +137,7 @@ public class ArraysTest {
     @Test
         void evenOddSorting() {
             Integer[] array = {7, -8, 10, -100, 13, -10, 99};
-            Integer[] expected = {-100, -10, -8, 10,  99, 13, 7}; // even numbers in ascending order first, odd numbers in
+            Integer[] expected = {-100, -10, -8, 10,  99, 13, 7}; 
             sort(array, new EvenOddComparator());
             assertArrayEquals(expected, array);
         }
@@ -149,4 +147,10 @@ public class ArraysTest {
             Integer[] expected = {7, 13, 99};
             assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
         }
-}
+    @Test
+    void removeIfTest() {
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {-8, 10, -100, -10};
+        assertArrayEquals(expected, removeIf(array, new OddNumbersPredicate()));
+    }
+}       

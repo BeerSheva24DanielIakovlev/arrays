@@ -6,8 +6,21 @@ public class EvenOddComparator implements Comparator<Integer>{
 
     @Override
     public int compare(Integer arg0, Integer arg1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'compare'");
+        int a = 0;
+        if(arg0 % 2 != 0) {
+            if (arg1 % 2 == 0) {
+                a = 1;
+            }
+            else {
+                a = arg1 - arg0;
+            }
+        }
+        else {
+            if (arg1 % 2 == 0) {
+                a = arg0 - arg1;
+            }
+        }
+        return a;
     }
 
 }
