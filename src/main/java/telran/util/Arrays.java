@@ -167,9 +167,15 @@ public class Arrays {
         return left > right ? -(left + 1) : middle;
     }
 
-    public static <T extends Comparable</*? super*/ T>>  int binarySearch(T[] array, T key) {
+    /*public static <T extends Comparable<? super T>>  int binarySearch(T[] array, T key) {
         return binarySearch(array, key, Comparator.naturalOrder());
+    }*/
+
+    @SuppressWarnings("unchecked")
+    public static <T> int binarySearch(T[] array, T key) {
+        return binarySearch(array, key, (a, b) -> ((Comparable<? super T>) a).compareTo(b));
     }
+    
 
     public static <T> T[] insert(T [] array, int index, T item) {
         //T [] resultArr = new T [10];
