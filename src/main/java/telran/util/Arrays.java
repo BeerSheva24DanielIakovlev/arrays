@@ -175,7 +175,6 @@ public class Arrays {
     public static <T> int binarySearch(T[] array, T key) {
         return binarySearch(array, key, (a, b) -> ((Comparable<? super T>) a).compareTo(b));
     }
-    
 
     public static <T> T[] insert(T [] array, int index, T item) {
         //T [] resultArr = new T [10];
@@ -197,5 +196,9 @@ public class Arrays {
 
     public static <T> T[] removeIf (T[] array, Predicate<T> predicate) {
         return find(array, predicate.negate());
+    }
+
+    public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRule){
+        return "";
     }
 }

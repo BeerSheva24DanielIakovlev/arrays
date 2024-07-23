@@ -101,9 +101,9 @@ public class ArraysTest {
             String [] strings = {"lmn", "cfta", "w", "aa"};
             String [] expectedASCII ={"aa", "cfta", "lmn", "w"};
             String [] expectedLength = {"w", "aa", "lmn", "cfta"};
-            sort(strings, new ComparatorASCII());
+            sort(strings, (a,b) -> a.compareTo(b));
             assertArrayEquals(expectedASCII, strings);
-            sort(strings, new ComparatorLength());
+            sort(strings, (a, b) -> Integer.compare(a.length(), b.length()));
             assertArrayEquals(expectedLength, strings);
         }
     @Test
@@ -111,6 +111,8 @@ public class ArraysTest {
             String [] stringsASCII ={"aa", "cfta", "lmn", "w"};
             String [] stringsLength = {"w", "aa", "lmn", "cfta"};
             Integer [] numbers = {1000,2000};
+            Comparator<String> compStrings = (a,b) -> a.compareTo(b);
+            Comparator<Integer> compInteger = Integer::compare;
             assertEquals(3, binarySearch(stringsASCII, "w", new ComparatorASCII()));
             assertEquals(0, binarySearch(stringsASCII, "aa", new ComparatorASCII()));
             assertEquals(1, binarySearch(stringsASCII, "cfta", new ComparatorASCII()));
@@ -129,9 +131,9 @@ public class ArraysTest {
             Person prs2 = new Person(20, "Itay");
             Person prs3 = new Person(30, "Sara");
             Person [] persons = {prs1, prs2, prs3};
-            assertEquals(1, /*java.util.Arrays.*/binarySearch(strings, "cfta"));
-            assertEquals(0, /*java.util.Arrays.*/binarySearch(persons, prs1));
-            assertEquals(-1, /*java.util.Arrays.*/binarySearch(persons, new Person(5, "Serg")));
+            assertEquals(1, binarySearch(strings, "cfta"));
+            assertEquals(0, binarySearch(persons, prs1));
+            assertEquals(-1, binarySearch(persons, new Person(5, "Serg")));
 
         }
     @Test
@@ -145,12 +147,31 @@ public class ArraysTest {
         void findTest() {
             Integer[] array = {7, -8, 10, -100, 13, -10, 99};
             Integer[] expected = {7, 13, 99};
+            sort(array, (a,b) -> {
+                boolean isArg0Even = a % 2 == 0;
+                boolean isArg1Even = b % 2 == 0;
+                boolean noSwapFlag = (isArg0Even && !isArg1Even) ||
+                (isArg0Even && isArg1Even && a <= b) ||
+                (!isArg0Even && !isArg1Even && a >= b); 
+                return noSwapFlag ? -1 : 1;
+            })
             assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
         }
     @Test
     void removeIfTest() {
         Integer[] array = {7, -8, 10, -100, 13, -10, 99};
         Integer[] expected = {-8, 10, -100, -10};
-        assertArrayEquals(expected, removeIf(array, new OddNumbersPredicate()));
+        Integer[] actual = removeIf(array, n -> n % 2 != 0);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    void matchesRulesTest() {
+        //TODO
+        // Must be rules: at least one capital letter, at least one lower case letter, at least one digit, at least one dot(.)
+        // Must not be rules: space is disallowed
+        //examples: mathes - {'a', 'n', '*', 'G', '.', '.', '1'}
+        //mismatches - {'a', 'n', '*', 'G', '.', '.', '1'}-> "space disallowed"
+        // {'a', 'n', '*', '.', '.', '1'} -> "no capital" 
+        // {'a', 'n', '*', 'G', '.', '.'} -> "no digit"
     }
 }       
