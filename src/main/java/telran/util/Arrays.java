@@ -58,26 +58,19 @@ public class Arrays {
     }
 
     public static int binarySearch(int [] ar, int key) {
-        int start = 0;
-        int finish = ar.length - 1;
+        int left = 0;
+        int right = ar.length - 1;
+        int middle = (left + right) / 2;
         
-        while (start <= finish) {
-            int mid = start + (finish - start) / 2;
-            
-            if (ar[mid] == key) {
-                return mid;
+        while (left <= right && ar[middle] != key) {
+            if (key < ar[middle]) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
             }
-            
-            else if (ar[mid] > key) {
-                finish = mid - 1;
-            }
-
-            else {
-                start = mid + 1;
-            }
+            middle = (left + right) / 2;
         }
-        
-        return -1;
+        return left > right ? -(left + 1) : middle;
     }
     
 
@@ -171,10 +164,16 @@ public class Arrays {
         return binarySearch(array, key, Comparator.naturalOrder());
     }*/
 
-    @SuppressWarnings("unchecked")
+   /* @SuppressWarnings("unchecked")
     public static <T> int binarySearch(T[] array, T key) {
         return binarySearch(array, key, (a, b) -> ((Comparable<? super T>) a).compareTo(b));
-    }
+    }*/
+
+    @SuppressWarnings("unchecked")
+    public static <T> int binarySearch(T[] array, T key) {
+        //The code should be based on binarySearch with comparator
+        return binarySearch(array, key, (Comparator<T>)Comparator.naturalOrder());
+    } 
 
     public static <T> T[] insert(T [] array, int index, T item) {
         //T [] resultArr = new T [10];
@@ -199,6 +198,38 @@ public class Arrays {
     }
 
     public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRule){
-        return "";
+        String result = "";
+ 
+        for(int p = 0; p < mustBeRules.length; p++) {
+            int i = 0;
+            int counter = 0;
+            do{
+                if (mustBeRules[p].predicate.test(chars[i]) != mustBeRules[p].flag){
+                    counter++;
+                }
+                i++;
+            }while((i) < chars.length);
+            if (counter == chars.length){
+                result += mustBeRules[p].errorMessage + "."; 
+            }
+
+        }
+
+        for(int u = 0; u < mustNotBeRule.length; u++) {
+         int i = 0;
+         int counter = 0;
+            do {
+                System.out.println(mustNotBeRule[u].predicate.test(chars[i]));
+                if (mustNotBeRule[u].predicate.test(chars[i]) != mustNotBeRule[u].flag){
+                    counter++;
+                }
+                i++;
+            } while( (i) < chars.length);
+            if (counter > 0){
+                result += mustNotBeRule[u].errorMessage + "."; 
+            }
+
+        }
+        return result;
     }
 }

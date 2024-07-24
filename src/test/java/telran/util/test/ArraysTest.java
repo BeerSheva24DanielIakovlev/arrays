@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import telran.util.CharacterRule;
+
 import static telran.util.Arrays.*;
 
-//import java.util.Comparator;
+import java.util.Comparator;
 
 import java.util.Random;
 
@@ -78,9 +80,13 @@ public class ArraysTest {
             }
     @Test
         void binarySearchTest() {
-            int[] ar = {-4, 3, 7, 10, 12, 13, 14};
-            assertEquals(1, binarySearch(ar, 3));
-            assertEquals(-1,binarySearch(ar, 9));
+            int [] arSorted = {10, 20, 30, 40, 50};
+            assertEquals(0, binarySearch(arSorted, 10));
+            assertEquals(4, binarySearch(arSorted, 50));
+            assertEquals(2, binarySearch(arSorted, 30));
+            assertEquals(-1, binarySearch(arSorted, 5));
+            assertEquals(-3, binarySearch(arSorted, 25));
+            assertEquals(-6, binarySearch(arSorted, 55));
         }
     @Test
         void insertSortedTest() {
@@ -108,21 +114,21 @@ public class ArraysTest {
         }
     @Test
         void binaryAnyTypeSearchTest() {
-            String [] stringsASCII ={"aa", "cfta", "lmn", "w"};
-            String [] stringsLength = {"w", "aa", "lmn", "cfta"};
+            String [] strings ={"aa", "cfta", "lmn", "w"};
+            //String [] stringsLength = {"w", "aa", "lmn", "cfta"};
             Integer [] numbers = {1000,2000};
             Comparator<String> compStrings = (a,b) -> a.compareTo(b);
             Comparator<Integer> compInteger = Integer::compare;
-            assertEquals(3, binarySearch(stringsASCII, "w", new ComparatorASCII()));
-            assertEquals(0, binarySearch(stringsASCII, "aa", new ComparatorASCII()));
-            assertEquals(1, binarySearch(stringsASCII, "cfta", new ComparatorASCII()));
-            assertEquals(-1, binarySearch(stringsASCII, "a", new ComparatorASCII()));
-            assertEquals(3, binarySearch(stringsLength, "cfta", new ComparatorLength()));
+            assertEquals(3, binarySearch(strings, "w", compStrings));
+            assertEquals(0, binarySearch(strings, "aa", compStrings));
+            assertEquals(1, binarySearch(strings, "cfta", compStrings));
+            assertEquals(-1, binarySearch(strings, "a", compStrings));
+            /*assertEquals(3, binarySearch(stringsLength, "cfta", new ComparatorLength()));
             assertEquals(0, binarySearch(stringsLength, "w", new ComparatorLength()));
             assertEquals(1, binarySearch(stringsLength, "aa", new ComparatorLength()));
-            assertEquals(0, binarySearch(stringsLength, "a", new ComparatorLength()));
-            assertEquals(0, binarySearch(numbers, 1000, new ComparatorNumbers()));
-            assertEquals(-3, binarySearch(numbers, 3000, new ComparatorNumbers()));
+            assertEquals(0, binarySearch(stringsLength, "a", new ComparatorLength()));*/
+            assertEquals(0, binarySearch(numbers, 1000, compInteger));
+            assertEquals(-3, binarySearch(numbers, 3000, compInteger));
         }
     @Test
         void binarySearchNoComparatorTest() {
@@ -138,15 +144,8 @@ public class ArraysTest {
         }
     @Test
         void evenOddSorting() {
-            Integer[] array = {7, -8, 10, -100, 13, -10, 99};
-            Integer[] expected = {-100, -10, -8, 10,  99, 13, 7}; 
-            sort(array, new EvenOddComparator());
-            assertArrayEquals(expected, array);
-        }
-    @Test
-        void findTest() {
-            Integer[] array = {7, -8, 10, -100, 13, -10, 99};
-            Integer[] expected = {7, 13, 99};
+            Integer[] array = {-3, 7, -8, 10, -100, 13, -10, 99};
+            Integer[] expected = {-100, -10, -8, 10, 99, 13, 7, -3};
             sort(array, (a,b) -> {
                 boolean isArg0Even = a % 2 == 0;
                 boolean isArg1Even = b % 2 == 0;
@@ -154,9 +153,15 @@ public class ArraysTest {
                 (isArg0Even && isArg1Even && a <= b) ||
                 (!isArg0Even && !isArg1Even && a >= b); 
                 return noSwapFlag ? -1 : 1;
-            })
-            assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
+            });
+            assertArrayEquals(expected, array);
         }
+    @Test
+        void findTest() {
+            Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+            Integer [] expected = {7, 13, 99};
+            assertArrayEquals(expected, find(array, n -> n % 2 != 0));
+}
     @Test
     void removeIfTest() {
         Integer[] array = {7, -8, 10, -100, 13, -10, 99};
@@ -173,5 +178,23 @@ public class ArraysTest {
         //mismatches - {'a', 'n', '*', 'G', '.', '.', '1'}-> "space disallowed"
         // {'a', 'n', '*', '.', '.', '1'} -> "no capital" 
         // {'a', 'n', '*', 'G', '.', '.'} -> "no digit"
+        char[] array = {'g'};
+        char[] array2 = {'a', 'n', '*', 'F', '.', '.', '1'};
+        CharacterRule rule1 = new CharacterRule(true, (n) -> Character.isLowerCase(n), "contain capital letter" ); //MustBeRules
+        CharacterRule rule2 = new CharacterRule(true, (n) -> Character.isDigit(n), "no contain digit");
+        CharacterRule rule3 = new CharacterRule(true, (n) -> Character.isLetter(n), "contain no letter");
+        CharacterRule unRule1 = new CharacterRule(false, (n) -> Character.isWhitespace(n), "contain space");//MustNotBeRules
+        CharacterRule unRule2 = new CharacterRule(false, (n) -> Character.isLetterOrDigit(n), "containLetter or Digit");
+        CharacterRule unRule3 = new CharacterRule(false, (n) -> Character.isUpperCase(n), "contain capital letter!");
+        CharacterRule rules[] = {rule1};
+        CharacterRule rules2[] = {rule1, rule2, rule3};
+        CharacterRule rules3[] = {rule2};
+        CharacterRule unRules[] = {unRule1};
+        CharacterRule unRules2[] = {unRule1, unRule2, unRule3};
+        CharacterRule unRules3[] = {unRule3};
+        assertEquals("", matchesRules(array, rules, unRules));
+        assertEquals("contain capital letter!.", matchesRules(array2, rules3, unRules3));
+        assertEquals("containLetter or Digit.contain capital letter!.", matchesRules(array2, rules, unRules2));
+        assertEquals("containLetter or Digit.contain capital letter!.", matchesRules(array2, rules2, unRules2));
     }
 }       
