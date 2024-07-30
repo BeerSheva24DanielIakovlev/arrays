@@ -208,7 +208,7 @@ public class Arrays {
                     counter++;
                 }
                 i++;
-            }while((i) < chars.length);
+            } while((i) < chars.length);
             if (counter == chars.length){
                 result += mustBeRules[p].errorMessage + "."; 
             }
@@ -219,7 +219,6 @@ public class Arrays {
          int i = 0;
          int counter = 0;
             do {
-                System.out.println(mustNotBeRule[u].predicate.test(chars[i]));
                 if (mustNotBeRule[u].predicate.test(chars[i]) != mustNotBeRule[u].flag){
                     counter++;
                 }
@@ -232,4 +231,5 @@ public class Arrays {
         }
         return result;
     }
+
 }

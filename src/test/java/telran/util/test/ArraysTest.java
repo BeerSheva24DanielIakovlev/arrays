@@ -171,13 +171,6 @@ public class ArraysTest {
     }
     @Test
     void matchesRulesTest() {
-        //TODO
-        // Must be rules: at least one capital letter, at least one lower case letter, at least one digit, at least one dot(.)
-        // Must not be rules: space is disallowed
-        //examples: mathes - {'a', 'n', '*', 'G', '.', '.', '1'}
-        //mismatches - {'a', 'n', '*', 'G', '.', '.', '1'}-> "space disallowed"
-        // {'a', 'n', '*', '.', '.', '1'} -> "no capital" 
-        // {'a', 'n', '*', 'G', '.', '.'} -> "no digit"
         char[] array = {'g'};
         char[] array2 = {'a', 'n', '*', 'F', '.', '.', '1'};
         CharacterRule rule1 = new CharacterRule(true, (n) -> Character.isLowerCase(n), "contain capital letter" ); //MustBeRules
